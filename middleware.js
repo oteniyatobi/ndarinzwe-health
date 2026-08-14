@@ -4,6 +4,11 @@ import { NextResponse } from 'next/server'
 const PROTECTED_ROUTES = ['/dashboard', '/journey', '/profile']
 
 export async function middleware(request) {
+  // If env vars are missing (e.g. not set in Vercel), skip middleware safely
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return NextResponse.next()
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -25,30 +30,16 @@ export async function middleware(request) {
     }
   )
 
-  // IMPORTANT: Do not remove — refreshes expired tokens on every request
+  // Refreshes expired tokens — do not remove
   const { data: { user } } = await supabase.auth.getUser()
 
   const path = request.nextUrl.pathname
   const isProtected = PROTECTED_ROUTES.some((r) => path.startsWith(r))
 
-  // Unauthenticated user hitting a protected route → login
   if (!user && isProtected) {
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('next', path)
     return NextResponse.redirect(loginUrl)
-  }
-
-  // Role-based protection: /dashboard/chw is CHW-only
-  if (user && path.startsWith('/dashboard/chw')) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single()
-
-    if (profile?.role !== 'chw') {
-      return NextResponse.redirect(new URL('/dashboard', request.url))
-    }
   }
 
   return supabaseResponse
