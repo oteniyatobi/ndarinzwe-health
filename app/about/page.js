@@ -17,7 +17,7 @@ export default function AboutPage() {
       <section className="bg-[#FFF0F6] px-6 md:px-10 py-16 md:py-24">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1 max-w-xl">
-            <h1 className="text-4xl md:text-5xl font-bold text-navy leading-tight mb-6">
+            <h1 className="text-3xl md:text-5xl font-bold text-navy leading-tight mb-6">
               Supporting Every Pregnancy Through Better Care
             </h1>
             <p className="text-base font-medium text-black/60 leading-relaxed mb-8">
@@ -140,7 +140,7 @@ export default function AboutPage() {
       </section>
 
       {/* Privacy CTA */}
-      <section className="bg-[#FFF0F6] mx-6 md:mx-10 mb-16 rounded-[16px] px-8 md:px-14 py-14">
+      <section className="bg-[#FFF0F6] mx-6 md:mx-10 mb-16 rounded-[16px] px-5 md:px-14 py-14">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
           <div className="flex-shrink-0 w-48 h-48 rounded-[16px] overflow-hidden">
             <Image

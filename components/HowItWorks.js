@@ -23,19 +23,6 @@ const steps = [
   },
 ]
 
-/*
- * Node positions use pentagon geometry centred at (50%, 50%) with radius r=36%.
- * Angles measured clockwise from 12 o'clock (top). Gap sits at the top.
- *
- *   left = 50% + r * sin(θ)
- *   top  = 50% − r * cos(θ)
- *
- *   θ=40°:  Baby Growth       → top 22%, left 73%
- *   θ=100°: Danger Signs      → top 56%, left 86%
- *   θ=150°: ANC Reminders     → top 81%, left 68%
- *   θ=210°: Pregnancy Tracking→ top 81%, left 32%
- *   θ=260°: CHW Support       → top 56%, left 15%
- */
 const nodes = [
   { label: 'Baby Growth',        color: '#2EC4B6', top: '22%', left: '73%' },
   { label: 'Danger Signs',       color: '#FA5091', top: '56%', left: '86%' },
@@ -49,19 +36,16 @@ export default function HowItWorks() {
     <section id="how-it-works" className="bg-pink-primary/10 py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
 
-        {/* Heading */}
-        <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-4xl font-bold text-navy mb-4">
-            How Ndarinzwe Works
-          </h2>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-navy mb-4">How Ndarinzwe Works</h2>
           <p className="text-sm font-medium text-black max-w-md mx-auto leading-relaxed">
             Getting started takes just a few minutes. Here is how Ndarinzwe supports you from sign-up to connected care.
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
+        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-20">
 
-          {/* Left — numbered steps */}
+          {/* Steps list */}
           <div className="flex-1 max-w-sm w-full">
             <ol className="space-y-6">
               {steps.map((step) => (
@@ -76,54 +60,56 @@ export default function HowItWorks() {
                 </li>
               ))}
             </ol>
-
-            <a
-              href="/signup"
-              className="mt-10 inline-block px-7 py-3 bg-navy text-white text-sm font-medium rounded-[5px] hover:opacity-90 transition-opacity"
-            >
+            <a href="/signup" className="mt-10 inline-block px-7 py-3 bg-navy text-white text-sm font-medium rounded-[5px] hover:opacity-90 transition-opacity">
               Start Your Journey
             </a>
           </div>
 
-          {/* Right — circular feature diagram */}
-          <div className="flex-1 flex justify-center pb-10">
-            {/* overflow-visible lets bottom-row node labels extend past the container edge */}
-            <div className="relative w-72 h-72 md:w-80 md:h-80 overflow-visible">
+          {/* Feature tags — mobile: simple pill grid; desktop: circular diagram */}
+          <div className="flex-1 flex justify-center w-full">
 
-              {/* Outer dashed ring */}
-              <div className="absolute inset-0 rounded-full border-2 border-dashed border-pink-primary/30" />
-
-              {/* Center circle — pregnant woman illustration */}
-              <div className="absolute inset-[15%] rounded-full bg-pink-primary/10 shadow-md flex items-center justify-center overflow-hidden">
-                <Image
-                  src="/images/Animated SVJ 1.jpg"
-                  alt="Pregnant woman illustration"
-                  fill
-                  className="object-cover mix-blend-multiply scale-110"
-                />
+            {/* Mobile: pill grid */}
+            <div className="md:hidden w-full">
+              <div className="relative w-48 h-48 mx-auto mb-6">
+                <Image src="/images/Animated SVJ 1.jpg" alt="Pregnant woman illustration" fill className="object-contain mix-blend-multiply" />
               </div>
-
-              {/* Feature nodes */}
-              {nodes.map((node) => (
-                <div
-                  key={node.label}
-                  className="absolute flex flex-col items-center gap-1"
-                  style={{ top: node.top, left: node.left, transform: 'translate(-50%, -50%)' }}
-                >
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center shadow-sm"
+              <div className="flex flex-wrap justify-center gap-2">
+                {nodes.map((node) => (
+                  <span
+                    key={node.label}
+                    className="px-3 py-1.5 rounded-full text-xs font-bold text-white"
                     style={{ backgroundColor: node.color }}
                   >
-                    <span className="text-white text-[9px] font-bold text-center leading-tight px-1">
-                      {node.label.split(' ')[0]}
-                    </span>
-                  </div>
-                  <span className="text-[10px] font-bold text-navy text-center leading-tight w-16">
                     {node.label}
                   </span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
+
+            {/* Desktop: circular diagram */}
+            <div className="hidden md:flex justify-center pb-10">
+              <div className="relative w-80 h-80 overflow-visible">
+                <div className="absolute inset-0 rounded-full border-2 border-dashed border-pink-primary/30" />
+                <div className="absolute inset-[15%] rounded-full bg-pink-primary/10 shadow-md flex items-center justify-center overflow-hidden">
+                  <Image src="/images/Animated SVJ 1.jpg" alt="Pregnant woman illustration" fill className="object-cover mix-blend-multiply scale-110" />
+                </div>
+                {nodes.map((node) => (
+                  <div
+                    key={node.label}
+                    className="absolute flex flex-col items-center gap-1"
+                    style={{ top: node.top, left: node.left, transform: 'translate(-50%, -50%)' }}
+                  >
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-sm" style={{ backgroundColor: node.color }}>
+                      <span className="text-white text-[9px] font-bold text-center leading-tight px-1">
+                        {node.label.split(' ')[0]}
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-bold text-navy text-center leading-tight w-16">{node.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

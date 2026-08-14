@@ -374,7 +374,7 @@ function SignUpPage() {
             <div className="space-y-5">
               <h1 className="text-3xl font-bold text-navy">Create Account</h1>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="First Legal Name" error={fieldErrors.firstName}>
                   <input type="text" value={form.firstName} onChange={set('firstName')}
                     autoComplete="given-name" className={fieldErrors.firstName ? inputErrCls : inputCls} />
@@ -588,7 +588,7 @@ function SignUpPage() {
                   <LocationIcon />
                   {form.lat ? '✓ GPS location captured' : 'Use my current location (optional)'}
                 </button>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <Field label="District *" error={fieldErrors.district}>
                     <select value={form.district}
                       onChange={e => { set('district')(e); setForm(f => ({ ...f, sector: '' })) }}
@@ -641,7 +641,7 @@ function SignUpPage() {
               <div>
                 <p className="text-sm font-medium text-navy mb-1">Which district or sector do you serve? *</p>
                 <p className="text-xs font-medium text-amber-600 mb-3">Required — mothers in your area will be matched to you.</p>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field label="District *" error={fieldErrors.chwDistrict}>
                     <select value={form.chwDistrict}
                       onChange={e => { set('chwDistrict')(e); setForm(f => ({ ...f, chwSector: '' })) }}

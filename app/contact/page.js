@@ -13,7 +13,7 @@ export default function ContactPage() {
     <div className="min-h-screen flex flex-col bg-white">
       {/* Privacy banner */}
       {bannerOpen && (
-        <div className="bg-[#FFF0F6] border-b border-pink-primary/20 px-6 py-3 flex items-center justify-center gap-2 text-sm font-medium text-navy relative">
+        <div className="bg-[#FFF0F6] border-b border-pink-primary/20 px-6 pr-12 py-3 flex items-center justify-center gap-2 text-sm font-medium text-navy relative">
           Your data privacy matters.{' '}
           <Link href="/privacy" className="underline underline-offset-2 font-bold hover:text-pink-primary transition-colors">
             Manage privacy choices
@@ -86,7 +86,7 @@ export default function ContactPage() {
       </section>
 
       {/* CTA banner */}
-      <section className="bg-[#FFF0F6] mx-6 md:mx-10 mb-16 rounded-[16px] px-8 md:px-14 py-12">
+      <section className="bg-[#FFF0F6] mx-6 md:mx-10 mb-16 rounded-[16px] px-5 md:px-14 py-12">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <h2 className="text-2xl md:text-3xl font-bold text-navy">Become a part of us today</h2>
           <Link

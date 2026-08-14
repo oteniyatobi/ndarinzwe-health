@@ -51,7 +51,7 @@ export default function Footer() {
           </div>
 
           {/* Link columns */}
-          <div className="flex-1 grid grid-cols-3 gap-8">
+          <div className="flex-1 grid grid-cols-3 gap-4 md:gap-8">
             {Object.entries(links).map(([heading, items]) => (
               <div key={heading}>
                 <p className="text-sm font-bold text-white mb-4">{heading}</p>
