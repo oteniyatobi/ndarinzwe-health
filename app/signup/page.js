@@ -1,8 +1,6 @@
 'use client'
 
-export const dynamic = 'force-dynamic'
-
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import AuthHeader from '@/components/AuthHeader'
@@ -104,7 +102,7 @@ function ErrorBanner({ message, isAccountExists, onLogin }) {
 }
 
 /* ── Main component ──────────────────────────────────────────── */
-export default function SignUpPage() {
+function SignUpPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const isResume = searchParams.get('resume') === '1'
@@ -808,4 +806,8 @@ function LocationIcon() {
       <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" /><circle cx="12" cy="9" r="2.5" />
     </svg>
   )
+}
+
+export default function SignUpPageWrapper() {
+  return <Suspense><SignUpPage /></Suspense>
 }

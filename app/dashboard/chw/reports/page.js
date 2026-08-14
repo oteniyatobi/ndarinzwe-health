@@ -1,8 +1,6 @@
 'use client'
 
-export const dynamic = 'force-dynamic'
-
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
@@ -20,7 +18,7 @@ function today() { return new Date().toISOString().split('T')[0] }
 
 const inputCls = 'w-full px-3 py-2.5 border border-gray-300 rounded-[5px] text-sm text-black focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent bg-white'
 
-export default function ChwReportsPage() {
+function ChwReportsPage() {
   const router = useRouter()
   const params = useSearchParams()
   const preselectedMother = params.get('mother')
@@ -234,4 +232,8 @@ function Loading({ label }) {
       </div>
     </div>
   )
+}
+
+export default function ChwReportsPageWrapper() {
+  return <Suspense><ChwReportsPage /></Suspense>
 }

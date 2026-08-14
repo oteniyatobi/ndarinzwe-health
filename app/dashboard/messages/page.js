@@ -1,8 +1,6 @@
 'use client'
 
-export const dynamic = 'force-dynamic'
-
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
@@ -17,7 +15,7 @@ function fmtTime(iso) {
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
 }
 
-export default function MessagesPage() {
+function MessagesPage() {
   const router = useRouter()
   const params = useSearchParams()
   const withId = params.get('with') // CHW prefills mother ID, mother auto-uses linked CHW
@@ -253,4 +251,8 @@ function Loading({ label }) {
       </div>
     </div>
   )
+}
+
+export default function MessagesPageWrapper() {
+  return <Suspense><MessagesPage /></Suspense>
 }
