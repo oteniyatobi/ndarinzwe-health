@@ -217,7 +217,13 @@ function SignUpPage() {
     setLoading(true)
     setApiError('')
     setIsAccountExists(false)
-    const supabase = createClient()
+    let supabase
+    try {
+      supabase = createClient()
+    } catch (err) {
+      showErr(err.message || 'Authentication service is not configured. Please contact support.')
+      return
+    }
 
     let uid
 

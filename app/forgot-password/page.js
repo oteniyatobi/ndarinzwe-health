@@ -24,25 +24,22 @@ export default function ForgotPasswordPage() {
       return
     }
 
-    const supabase = createClient()
+    try {
+      const supabase = createClient()
+      const redirectTo = `${window.location.origin}/auth/callback?next=/reset-password`
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(trimmed, { redirectTo })
 
-    // redirectTo must be an absolute URL — Supabase sends user here after clicking email link.
-    // The auth callback exchanges the code then redirects to /reset-password.
-    const redirectTo = `${window.location.origin}/auth/callback?next=/reset-password`
-
-    const { error: resetError } = await supabase.auth.resetPasswordForEmail(trimmed, { redirectTo })
-
-    if (resetError) {
-      // Don't reveal whether the email exists — always show success to prevent enumeration.
-      // Only show an error for rate limiting.
-      if (resetError.message?.toLowerCase().includes('rate')) {
+      if (resetError?.message?.toLowerCase().includes('rate')) {
         setError('Too many requests. Please wait a few minutes before trying again.')
         setLoading(false)
         return
       }
+    } catch (err) {
+      setError(err.message || 'Could not connect. Check your connection and try again.')
+      setLoading(false)
+      return
     }
 
-    // Always show the "check your email" screen regardless of whether the email exists.
     setSent(true)
     setLoading(false)
   }

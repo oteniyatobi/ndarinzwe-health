@@ -74,8 +74,17 @@ function LoginContent() {
       return
     }
 
-    const supabase = createClient()
-    const { data, error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+    let data, signInError
+    try {
+      const supabase = createClient()
+      const res = await supabase.auth.signInWithPassword({ email, password })
+      data = res.data
+      signInError = res.error
+    } catch (err) {
+      setError(err.message || 'Could not connect to authentication service. Check Supabase environment variables.')
+      setLoading(false)
+      return
+    }
 
     if (signInError) {
       const newCount = failCount + 1
