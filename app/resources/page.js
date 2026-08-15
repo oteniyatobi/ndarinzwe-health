@@ -14,22 +14,16 @@ const RESOURCES = [
     imageAlt: 'Pregnant mother holding her belly',
     items: [
       {
-        title: 'Focused Antenatal Care in Rwanda',
-        source: 'Rwanda Biomedical Centre (RBC)',
-        description: 'Guidelines for antenatal visits, timing, and what to expect at each appointment.',
-        url: 'https://www.rbc.gov.rw',
+        title: 'Understanding Warning Signs During Pregnancy',
+        source: 'Rwanda Ministry of Health',
+        description: 'Warning signs during pregnancy that require immediate medical attention — and when to go to the health facility.',
+        slug: 'understanding-warning-signs',
       },
       {
-        title: 'Pregnancy Danger Signs',
+        title: 'Managing Common Pregnancy Symptoms',
         source: 'Rwanda Ministry of Health',
-        description: 'Warning signs during pregnancy that require immediate medical attention.',
-        url: 'https://www.moh.gov.rw',
-      },
-      {
-        title: 'Iron and Folic Acid Supplementation',
-        source: 'Rwanda Ministry of Health',
-        description: 'Why iron and folic acid matter during pregnancy and how to take them.',
-        url: 'https://www.moh.gov.rw',
+        description: 'Common pregnancy discomforts explained, with guidance on when a symptom needs professional assessment.',
+        slug: 'managing-pregnancy-symptoms',
       },
     ],
   },
@@ -39,16 +33,10 @@ const RESOURCES = [
     imageAlt: 'Mother reading nutrition information',
     items: [
       {
-        title: 'Nutrition During Pregnancy',
+        title: 'Eating Healthy During Pregnancy',
         source: 'Rwanda Ministry of Health',
-        description: 'Foods to eat and avoid, portion sizes, and staying hydrated during pregnancy.',
-        url: 'https://www.moh.gov.rw',
-      },
-      {
-        title: 'Prevention of Malnutrition in Mothers and Children',
-        source: 'Rwanda Biomedical Centre (RBC)',
-        description: 'Community-based nutrition guidelines for pregnant and breastfeeding mothers.',
-        url: 'https://www.rbc.gov.rw',
+        description: 'Nutrition guidance aligned with Rwanda Ministry of Health recommendations — iron, folate, protein, and foods to avoid.',
+        slug: 'eating-healthy-during-pregnancy',
       },
     ],
   },
@@ -60,14 +48,8 @@ const RESOURCES = [
       {
         title: 'Preparing for Labour and Childbirth',
         source: 'Rwanda Ministry of Health',
-        description: 'What to expect during labour, when to go to the health facility, and birth planning.',
-        url: 'https://www.moh.gov.rw',
-      },
-      {
-        title: 'Emergency Obstetric Care in Rwanda',
-        source: 'Rwanda Biomedical Centre (RBC)',
-        description: 'Referral pathways and emergency obstetric services available across Rwanda.',
-        url: 'https://www.rbc.gov.rw',
+        description: 'What to expect during labour, when to go to the health facility, what to bring, and how to plan your support.',
+        slug: 'preparing-for-labor-and-childbirth',
       },
     ],
   },
@@ -77,29 +59,16 @@ const RESOURCES = [
     imageAlt: 'Mother after giving birth',
     items: [
       {
-        title: 'Postnatal Care for Mothers and Newborns',
+        title: 'Recovery After Childbirth',
         source: 'Rwanda Ministry of Health',
-        description: 'Care in the first 6 weeks after birth — danger signs, breastfeeding, and recovery.',
-        url: 'https://www.moh.gov.rw',
+        description: 'What is normal after birth, breastfeeding support, emotional wellbeing, and your postnatal check-up schedule.',
+        slug: 'recovery-after-childbirth',
       },
       {
-        title: 'Immunisation Schedule in Rwanda',
+        title: "Supporting Baby's Healthy Growth",
         source: 'Rwanda Biomedical Centre (RBC)',
-        description: "Rwanda's vaccination schedule for newborns and infants in the first year.",
-        url: 'https://www.rbc.gov.rw',
-      },
-    ],
-  },
-  {
-    category: 'Mental Health',
-    image: '/images/Animated SVJ 2.jpg',
-    imageAlt: 'Mother seeking support and connection',
-    items: [
-      {
-        title: 'Mental Health During and After Pregnancy',
-        source: 'Rwanda Ministry of Health',
-        description: 'Recognising and managing anxiety, depression and stress during pregnancy.',
-        url: 'https://www.moh.gov.rw',
+        description: "Newborn care basics, growth monitoring, the Rwanda immunisation schedule, and developmental milestones.",
+        slug: 'supporting-babys-healthy-growth',
       },
     ],
   },
@@ -161,7 +130,7 @@ export default function ResourcesPage() {
 
         <div className="mb-6 px-4 py-3 bg-amber-50 border border-amber-200 rounded-[8px]">
           <p className="text-sm font-medium text-amber-800">
-            All resources on this page link to official Rwanda Ministry of Health (moh.gov.rw) and Rwanda Biomedical Centre (rbc.gov.rw) websites. Always consult your doctor or Community Health Worker for personal medical advice.
+            All articles are based on Rwanda Ministry of Health and Rwanda Biomedical Centre guidelines. Always consult your doctor or Community Health Worker for personal medical advice.
           </p>
         </div>
 
@@ -184,7 +153,7 @@ export default function ResourcesPage() {
               </div>
               <div className="space-y-3">
                 {section.items.map(item => (
-                  <a key={item.title} href={item.url} target="_blank" rel="noopener noreferrer"
+                  <Link key={item.title} href={`/resources/${item.slug}`}
                     className="block p-5 border border-gray-200 rounded-[10px] hover:border-navy/40 hover:shadow-sm transition-all group">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
@@ -196,12 +165,10 @@ export default function ResourcesPage() {
                       </div>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
                         className="text-navy/30 group-hover:text-navy shrink-0 mt-1 transition-colors">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                        <polyline points="15 3 21 3 21 9"/>
-                        <line x1="10" y1="14" x2="21" y2="3"/>
+                        <polyline points="9 18 15 12 9 6"/>
                       </svg>
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
