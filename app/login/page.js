@@ -74,9 +74,9 @@ function LoginContent() {
       return
     }
 
-    let data, signInError
+    let supabase, data, signInError
     try {
-      const supabase = createClient()
+      supabase = createClient()
       const res = await supabase.auth.signInWithPassword({ email, password })
       data = res.data
       signInError = res.error
