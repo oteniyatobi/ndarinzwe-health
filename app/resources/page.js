@@ -9,8 +9,48 @@ import Footer from '@/components/Footer'
 
 const RESOURCES = [
   {
-    category: 'Antenatal Care',
+    category: '🤰 My Pregnancy Journey',
+    image: '/images/Pregnant mother 1.avif',
+    imageAlt: 'Pregnant mother on her journey',
+    items: [
+      { title: "You're Pregnant: What Should You Do First?", source: 'Rwanda Ministry of Health / WHO', description: 'The most important first steps after confirming a pregnancy — from starting ANC to folic acid and lifestyle changes.', slug: 'youre-pregnant-what-to-do-first' },
+      { title: 'Your Pregnancy Journey: Week by Week', source: 'Rwanda Ministry of Health / WHO', description: 'How your pregnancy and baby progress through all three trimesters — from week 1 to week 40.', slug: 'your-pregnancy-journey-week-by-week' },
+      { title: 'What Is Happening to Your Baby This Week?', source: 'Rwanda Ministry of Health / WHO', description: "Stage-by-stage guide to your baby's development from embryo to full-term newborn.", slug: 'what-is-happening-to-your-baby-this-week' },
+      { title: 'What Changes Should You Expect in Your Body?', source: 'Rwanda Ministry of Health / WHO', description: 'A trimester-by-trimester guide to normal body changes and clear warning signs needing hospital attention.', slug: 'changes-in-your-body-during-pregnancy' },
+      { title: 'Your First ANC Visit: What to Expect', source: 'Rwanda Ministry of Health', description: 'Exactly what happens at your first antenatal care appointment — tests, treatments, and your ANC card.', slug: 'your-first-anc-visit-what-to-expect' },
+      { title: 'Why Starting ANC Early Matters', source: 'Rwanda Ministry of Health / WHO 2016', description: 'The evidence for beginning antenatal care before 12 weeks and why early registration saves lives.', slug: 'why-starting-anc-early-matters' },
+      { title: 'Your ANC Journey: What Happens at Each Visit?', source: 'Rwanda Ministry of Health', description: 'A detailed guide to each ANC contact — what is checked, what is given, and why each visit matters.', slug: 'your-anc-journey-what-happens-at-each-visit' },
+      { title: 'Important Tests During Pregnancy', source: 'Rwanda Ministry of Health / WHO', description: 'Understanding blood pressure, haemoglobin, HIV, syphilis, urine, and malaria prevention at ANC.', slug: 'important-tests-during-pregnancy' },
+      { title: 'Your Pregnancy Checklist for This Month', source: 'Rwanda Ministry of Health', description: 'A month-by-month checklist covering ANC, supplements, nutrition, warning signs, and birth preparation.', slug: 'your-pregnancy-checklist-for-this-month' },
+      { title: 'Questions to Ask at Your Next ANC Visit', source: 'Rwanda Ministry of Health / WHO', description: 'The most important questions to ask your health provider at each stage of pregnancy.', slug: 'questions-to-ask-at-your-anc-visit' },
+      { title: "What Your CHW Can Help You With During Pregnancy", source: "Rwanda Ministry of Health", description: "The role of your Community Health Worker (Abajyanama b'ubuzima) — what they can and cannot do.", slug: 'what-your-chw-can-help-with-during-pregnancy' },
+      { title: 'When Should You Contact Your Health Facility?', source: 'Rwanda Ministry of Health', description: 'Clear guidance on which symptoms require immediate hospital attendance and which can wait.', slug: 'when-should-you-contact-your-health-facility' },
+    ],
+  },
+  {
+    category: '🩺 Antenatal Care',
     image: '/images/istockphoto-182505788-612x612.webp',
+    imageAlt: 'Mother at an antenatal care visit',
+    items: [
+      { title: 'ANC: More Than Just a Clinic Visit', source: 'Rwanda Ministry of Health / WHO 2016', description: 'What antenatal care actually delivers — and why every contact matters beyond routine measurements.', slug: 'anc-more-than-just-a-clinic-visit' },
+      { title: 'When Should I Start ANC?', source: 'Rwanda Ministry of Health / WHO', description: 'Why beginning ANC before 12 weeks is critical and what to do if you started late.', slug: 'when-should-i-start-anc' },
+      { title: 'How Many ANC Contacts Should I Have?', source: 'Rwanda Ministry of Health / WHO 2016', description: "Rwanda's ANC schedule — what happens at each of the four essential contacts and why none should be missed.", slug: 'how-many-anc-contacts-should-i-have' },
+      { title: 'What Happens During an ANC Visit?', source: 'Rwanda Ministry of Health', description: 'A step-by-step walkthrough of every procedure and check at a typical ANC appointment.', slug: 'what-happens-during-an-anc-visit' },
+      { title: 'Why Your Blood Pressure Is Checked at Every Visit', source: 'Rwanda Ministry of Health / WHO', description: 'What blood pressure monitoring detects, what readings mean, and when high readings are an emergency.', slug: 'why-your-blood-pressure-is-checked' },
+      { title: 'Why Your Urine Is Tested at Every ANC Visit', source: 'Rwanda Ministry of Health / WHO', description: 'What urine testing screens for — preeclampsia, gestational diabetes, and urinary tract infections.', slug: 'why-your-urine-is-tested' },
+      { title: 'Understanding Blood Tests During Pregnancy', source: 'Rwanda Ministry of Health / WHO', description: 'A guide to haemoglobin, blood type, HIV, syphilis, and glucose tests — and what each result means.', slug: 'understanding-blood-tests-during-pregnancy' },
+      { title: 'Why HIV Testing Matters During Pregnancy', source: "Rwanda MoH / PMTCT Programme", description: "Rwanda's PMTCT programme and what an HIV-positive result means for your care and your baby.", slug: 'why-hiv-testing-matters-during-pregnancy' },
+      { title: 'Why Syphilis Testing Matters During Pregnancy', source: 'Rwanda Ministry of Health / WHO', description: 'Congenital syphilis is almost entirely preventable with one test and one injection — here is why it matters.', slug: 'why-syphilis-testing-matters' },
+      { title: 'Ultrasound During Pregnancy', source: 'Rwanda Ministry of Health / WHO', description: 'When ultrasounds are done, what they show, and what to expect during a pregnancy scan.', slug: 'ultrasound-during-pregnancy' },
+      { title: 'Iron and Folic Acid During Pregnancy', source: 'Rwanda Ministry of Health / WHO', description: 'Why iron and folic acid are essential, how to take them correctly, and managing side effects.', slug: 'iron-and-folic-acid-during-pregnancy' },
+      { title: 'Why Keeping Your ANC Appointments Matters', source: 'Rwanda DHS 2019–20 / WHO', description: 'The evidence that more ANC contacts mean better outcomes — and how to overcome barriers to attendance.', slug: 'why-keeping-your-anc-appointments-matters' },
+      { title: 'What Happens If I Miss an ANC Appointment?', source: 'Rwanda Ministry of Health', description: 'What to do if you have missed a visit, how to get back on track, and when to seek care immediately.', slug: 'what-happens-if-i-miss-an-anc-appointment' },
+      { title: 'How Ndarinzwe Helps You Stay on Track', source: 'Ndarinzwe Health', description: 'How the Ndarinzwe platform supports your antenatal care journey from registration to delivery.', slug: 'how-ndarinzwe-helps-you-stay-on-track' },
+    ],
+  },
+  {
+    category: 'Warning Signs & Safety',
+    image: '/images/Animated SVJ 2.jpg',
     imageAlt: 'Pregnant mother holding her belly',
     items: [
       {
