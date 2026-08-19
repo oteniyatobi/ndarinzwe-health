@@ -8,15 +8,23 @@ import Link from 'next/link'
 const FAQS = [
   {
     q: 'What is Ndarinzwe?',
-    a: 'Ndarinzwe means "let me be cared for" in Kinyarwanda. Ndarinzwe Health is a digital maternal health platform built for pregnant women, new mothers, and Community Health Workers (Inshuti Mu Buzima) across Rwanda. It brings together verified health information, pregnancy tracking, antenatal care reminders, and a direct line to your CHW — all in one place, available in Kinyarwanda and English.',
+    a: 'Ndarinzwe means "I am cared for" in Kinyarwanda. Ndarinzwe Health is a digital maternal health platform built for pregnant women, new mothers, and Community Health Workers (Abajyanama b\'ubuzima) across Rwanda. It brings together verified health information, pregnancy tracking, antenatal care reminders, and personalised care updates — all in one place, available in Kinyarwanda and English.',
   },
   {
     q: 'How can Ndarinzwe support me during pregnancy?',
-    a: 'Ndarinzwe provides week-by-week pregnancy information, reminders for your antenatal care (ANC) visits, a danger-signs checklist to monitor at home, and nutrition guidance. You can also send messages to your Community Health Worker through the platform and track key milestones across all three trimesters and into postpartum. All health content is aligned with Rwanda Ministry of Health and Rwanda Biomedical Centre (RBC) guidelines.',
+    a: 'Ndarinzwe provides week-by-week pregnancy information, reminders for your antenatal care (ANC) visits, a danger-signs checklist, and nutrition guidance. Your Community Health Worker (Umujyanama w\'ubuzima) can monitor your progress and send you care messages through the platform. All health content is aligned with Rwanda Ministry of Health and Rwanda Biomedical Centre (RBC) guidelines.',
   },
   {
     q: 'When should I start using Ndarinzwe?',
-    a: "You can register at any stage of pregnancy. Starting in your first trimester gives you access to the full ANC reminder schedule from the beginning. Rwanda's national antenatal care guidelines recommend at least four ANC visits during pregnancy — Ndarinzwe helps you prepare for and remember each one.",
+    a: "You can register at any stage of pregnancy. Starting in your first trimester gives you access to the full ANC reminder schedule from the beginning. Rwanda's national antenatal care guidelines recommend at least four ANC visits during pregnancy — Ndarinzwe helps you prepare for and track each one.",
+  },
+  {
+    q: 'What do I do in an emergency during pregnancy?',
+    a: 'In any obstetric emergency — heavy bleeding, severe headache, fits, baby not moving, or any sudden severe symptom — go to your nearest health facility or hospital immediately. Do not wait. Call for emergency transport if needed. Your Community Health Worker (Umujyanama w\'ubuzima) can support your routine care between visits, but emergencies must always be handled by doctors and nurses at a health facility. When in doubt, go directly to hospital.',
+  },
+  {
+    q: 'Can I send messages to my CHW through Ndarinzwe?',
+    a: 'Messaging on Ndarinzwe is designed so that your Community Health Worker (Umujyanama w\'ubuzima) reaches out to you — based on your health updates, upcoming appointments, and their observations from your care visits. You will receive messages and care reminders from your CHW through the app. For emergencies, always contact or go directly to your nearest hospital or health facility.',
   },
   {
     q: 'Is my health information safe with Ndarinzwe?',
@@ -24,27 +32,31 @@ const FAQS = [
   },
   {
     q: 'Can I use Ndarinzwe without visiting a healthcare facility?',
-    a: 'Ndarinzwe is designed to complement — not replace — in-person care. It helps you stay informed, track your health between appointments, and stay connected with your CHW. Rwanda Ministry of Health recommends all pregnant women attend their antenatal care visits at an approved health facility. Ndarinzwe helps you prepare for and remember those visits — it does not substitute for professional medical advice or examination.',
+    a: 'Ndarinzwe is designed to complement — not replace — in-person care. It helps you stay informed and track your health between appointments. Rwanda Ministry of Health recommends all pregnant women attend their antenatal care visits at an approved health facility. Ndarinzwe helps you prepare for those visits — it does not substitute for professional medical advice or clinical examination.',
   },
   {
     q: 'How do I connect with a Community Health Worker?',
-    a: 'During sign-up, you can link your account to your CHW (Inshuti Mu Buzima) by entering their unique code or searching by your village or sector. Once linked, your CHW can follow your progress, send you care reminders, and check in between your scheduled facility visits. If you do not know your CHW, your nearest health centre can help you identify them.',
+    a: "During sign-up, you can link your account to your CHW (Abajyanama b'ubuzima) by entering their unique code or searching by your village or sector. Once linked, your CHW can follow your progress and send you care reminders. If you don't know your CHW, your nearest health centre can help you identify them.",
+  },
+  {
+    q: 'Can I still use Ndarinzwe after giving birth?',
+    a: "Yes. After delivery, the app switches to postpartum mode — focused on your baby's growth, immunisation schedule, breastfeeding support, and postnatal recovery. You can continue tracking your wellbeing and your baby's milestones, and your CHW will continue to follow up with you through the platform.",
   },
   {
     q: 'Is Ndarinzwe free to use?',
-    a: 'Yes. Ndarinzwe is free to download and use for both mothers and Community Health Workers. There are no subscription fees. Standard data charges from your mobile network provider may apply when using the platform.',
+    a: "Yes. Ndarinzwe is free to download and use for both mothers and Community Health Workers. There are no subscription fees. Standard data charges from your mobile network provider may apply when using the platform.",
   },
   {
     q: 'What languages is Ndarinzwe available in?',
     a: 'Ndarinzwe is available in both Kinyarwanda and English. You can set your preferred language in your account settings and switch between them at any time.',
   },
   {
-    q: 'What should I do if I cannot access the platform?',
-    a: 'If you are unable to log in or the platform is not working, try restarting the app or checking your internet connection. If the problem continues, contact our support team by email at info@ndarinzwe.com or call +250 712 345 678 (Monday to Friday, 8am–5pm CAT).',
+    q: "Can Community Health Workers (Abajyanama b'ubuzima) also use Ndarinzwe?",
+    a: "Yes. Ndarinzwe has a dedicated CHW interface that allows Abajyanama b'ubuzima to manage their assigned mothers, track pregnancy progress, send care reminders, and receive alerts. CHWs register using a separate CHW account type and must be formally registered in Rwanda's national CHW programme.",
   },
   {
-    q: 'Can Community Health Workers (CHWs) also use Ndarinzwe?',
-    a: 'Yes. Ndarinzwe has a dedicated CHW interface that allows Inshuti Mu Buzima to manage their assigned mothers, track pregnancy progress, send care reminders, and receive alerts. CHWs register using a separate CHW account type and must be formally registered in Rwanda\'s national CHW programme.',
+    q: 'What should I do if I cannot access the platform?',
+    a: 'If you are unable to log in or the platform is not working, try restarting the app or checking your internet connection. If the problem continues, contact our support team by email at info@ndarinzwe.com or call +250 712 345 678 (Monday to Friday, 8am–5pm CAT).',
   },
 ]
 
@@ -107,8 +119,16 @@ export default function FAQPage() {
           ))}
         </div>
 
+        {/* Emergency notice */}
+        <div className="mt-8 bg-red-50 border border-red-200 rounded-[10px] px-6 py-5">
+          <p className="text-sm font-bold text-red-700 mb-1">In a medical emergency</p>
+          <p className="text-sm font-medium text-red-700">
+            Always go to your nearest hospital or health facility immediately. Do not wait for your CHW — they are not equipped to handle obstetric emergencies. Call for transport and go directly to hospital.
+          </p>
+        </div>
+
         {/* Contact CTA */}
-        <div className="mt-14 bg-pink-primary/10 rounded-[10px] px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="mt-10 bg-pink-primary/10 rounded-[10px] px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <h2 className="text-xl font-bold text-navy mb-2">Still have questions?</h2>
             <p className="text-sm font-medium text-black/70">

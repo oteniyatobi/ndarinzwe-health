@@ -74,6 +74,56 @@ function getGreeting() {
   return 'Good Evening'
 }
 
+function getBabyAge(dueDate) {
+  if (!dueDate) return '—'
+  const days = Math.floor((Date.now() - new Date(dueDate).getTime()) / 86400000)
+  if (days < 7) return `${days} day${days !== 1 ? 's' : ''} old`
+  const weeks = Math.floor(days / 7)
+  if (weeks < 8) return `${weeks} week${weeks !== 1 ? 's' : ''} old`
+  const months = Math.floor(days / 30)
+  return `${months} month${months !== 1 ? 's' : ''} old`
+}
+
+function getPostpartumMilestone(dueDate) {
+  if (!dueDate) return '—'
+  const days = Math.floor((Date.now() - new Date(dueDate).getTime()) / 86400000)
+  if (days < 2) return '24–48h Postnatal Check'
+  if (days < 7) return '7-Day Postnatal Visit'
+  if (days < 42) return '6-Week Postnatal Check'
+  const weeks = Math.floor(days / 7)
+  if (weeks < 6) return 'Penta 1 + Polio 1 (6 weeks)'
+  if (weeks < 10) return 'Penta 2 + Polio 2 (10 weeks)'
+  if (weeks < 14) return 'Penta 3 + Polio 3 (14 weeks)'
+  if (weeks < 36) return 'Measles + Yellow Fever (9 months)'
+  return 'Routine Growth Monitoring'
+}
+
+function getPostpartumTip(dueDate) {
+  if (!dueDate) return 'Track your recovery and baby\'s growth here.'
+  const days = Math.floor((Date.now() - new Date(dueDate).getTime()) / 86400000)
+  if (days < 7) return 'Breastfeed on demand — aim for 8–12 feeds in 24 hours. Colostrum (the first milk) is rich in antibodies your baby needs.'
+  if (days < 42) return 'Your 6-week postnatal check is important. A doctor or nurse will assess your recovery and your baby\'s growth and first vaccines.'
+  const months = Math.floor(days / 30)
+  if (months < 6) return 'Exclusive breastfeeding for the first 6 months gives your baby everything they need and protects against infections.'
+  return 'From 6 months, start introducing soft, nutritious foods alongside breast milk. Continue breastfeeding up to 2 years.'
+}
+
+const IMMUNISATION_SCHEDULE = [
+  { weeks: 0,  label: 'At Birth',  vaccines: 'BCG, Polio 0 (OPV)' },
+  { weeks: 6,  label: '6 Weeks',   vaccines: 'Penta 1, Polio 1, PCV 1, ROTA 1' },
+  { weeks: 10, label: '10 Weeks',  vaccines: 'Penta 2, Polio 2, PCV 2, ROTA 2' },
+  { weeks: 14, label: '14 Weeks',  vaccines: 'Penta 3, Polio 3, PCV 3' },
+  { weeks: 39, label: '9 Months',  vaccines: 'Measles 1, Yellow Fever' },
+  { weeks: 65, label: '15 Months', vaccines: 'Measles 2 (MR booster)' },
+]
+
+const POSTNATAL_TIPS = [
+  { icon: '🤱', title: 'Breastfeeding', body: 'Exclusive breastfeeding for 6 months protects your baby from infections and supports healthy brain development.' },
+  { icon: '🛏️', title: 'Rest & Recovery', body: 'Rest as much as possible. Caesarean recovery takes 6–8 weeks — avoid heavy lifting until your provider approves.' },
+  { icon: '💊', title: 'Iron Supplements', body: 'Continue iron and folic acid supplements as prescribed. Anaemia is common postpartum and must be treated.' },
+  { icon: '🏥', title: 'Postnatal Visits', body: 'Attend your 24–48h, 7-day, and 6-week checks. These catch complications and provide your baby\'s first vaccines.' },
+]
+
 /* ── Shared card components ─────────────────────────────────── */
 function Card({ title, children, button }) {
   return (
@@ -159,6 +209,7 @@ export default function MotherDashboard() {
   const firstName = profile?.full_name?.split(' ')[0] || 'there'
   const chwName = chwProfile?.profiles?.full_name || null
   const progressPct = weeks ? Math.min(100, (weeks / 40) * 100) : 0
+  const isPostpartum = mother?.due_date && new Date(mother.due_date) < new Date()
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -171,10 +222,19 @@ export default function MotherDashboard() {
             {getGreeting()}, {firstName}
           </h1>
           <p className="text-base font-medium text-navy/60">
-            {weeks !== null
-              ? `You're currently ${weeks} weeks pregnant. Here's what's important today.`
-              : "Welcome to your pregnancy dashboard. Here's what's important today."}
+            {isPostpartum
+              ? "Welcome back. Here's your postpartum care overview."
+              : weeks !== null
+                ? `You're currently ${weeks} weeks pregnant. Here's what's important today.`
+                : "Welcome to your pregnancy dashboard. Here's what's important today."}
           </p>
+          {/* Emergency notice */}
+          <div className="mt-4 inline-flex items-start gap-2 bg-red-50 border border-red-200 rounded-[8px] px-4 py-2.5">
+            <span className="text-red-600 mt-0.5 shrink-0">⚠</span>
+            <p className="text-xs font-medium text-red-700">
+              For any emergency — heavy bleeding, fits, baby not moving, severe pain — go to your nearest hospital immediately. Do not wait.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -182,26 +242,113 @@ export default function MotherDashboard() {
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 md:px-10 py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-          {/* My Pregnancy Progress */}
-          <Card title="My Pregnancy Progress" button={<OutlineBtn href="/journey">View Pregnancy Journey</OutlineBtn>}>
-            {weeks !== null ? (
-              <>
-                <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
-                  <div
-                    className="bg-navy h-2 rounded-full transition-all"
-                    style={{ width: `${progressPct}%` }}
-                  />
+          {/* ── POSTPARTUM MODE ── */}
+          {isPostpartum ? (
+            <>
+              {/* Baby Growth */}
+              <Card title="Baby Growth & Development" button={<OutlineBtn href="/resources/supporting-babys-healthy-growth">View Baby Guide</OutlineBtn>}>
+                <p className="text-sm font-bold text-navy mb-3">Postpartum Overview</p>
+                <DataRow label="Delivery Date" value={formatDate(mother?.due_date)} />
+                <DataRow label="Baby Age" value={getBabyAge(mother?.due_date)} />
+                <DataRow label="Next Milestone" value={getPostpartumMilestone(mother?.due_date)} />
+                <div className="mt-4 p-3 bg-pink-primary/10 rounded-[8px]">
+                  <p className="text-xs font-medium text-navy leading-relaxed">{getPostpartumTip(mother?.due_date)}</p>
                 </div>
-                <p className="text-sm font-medium text-gray-500 mb-5">{weeks} of 40 Weeks</p>
-              </>
-            ) : (
-              <div className="w-full bg-gray-200 rounded-full h-2 mb-5" />
-            )}
-            <p className="text-sm font-bold text-navy mb-3">Progress Data</p>
-            <DataRow label="Due Date" value={formatDate(mother?.due_date)} />
-            <DataRow label="Baby Size" value={babySize} />
-            <DataRow label="Next Milestone" value={nextMilestone} />
-          </Card>
+              </Card>
+
+              {/* Immunisation Schedule */}
+              <Card title="Baby Immunisation Schedule" button={<OutlineBtn href="/resources/supporting-babys-healthy-growth">Full Schedule</OutlineBtn>}>
+                <p className="text-xs font-medium text-gray-400 mb-3">Rwanda EPI Programme — Free at all health facilities</p>
+                <div className="space-y-2">
+                  {IMMUNISATION_SCHEDULE.map(v => {
+                    const babyAgeWeeks = mother?.due_date
+                      ? Math.floor((Date.now() - new Date(mother.due_date).getTime()) / (7 * 86400000))
+                      : 0
+                    const done = babyAgeWeeks > v.weeks
+                    const next = !done && babyAgeWeeks >= (v.weeks - 1)
+                    return (
+                      <div key={v.label} className={`flex items-center gap-3 py-1.5 px-3 rounded-[6px] ${next ? 'bg-pink-primary/10' : ''}`}>
+                        <span className={`w-4 h-4 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] ${done ? 'bg-green-500 text-white' : next ? 'bg-pink-primary text-white' : 'bg-gray-200 text-gray-400'}`}>
+                          {done ? '✓' : '·'}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-navy">{v.label}</p>
+                          <p className="text-xs text-gray-400 truncate">{v.vaccines}</p>
+                        </div>
+                        {next && <span className="text-[10px] font-bold text-pink-primary shrink-0">Due soon</span>}
+                      </div>
+                    )
+                  })}
+                </div>
+              </Card>
+
+              {/* Postpartum care tips */}
+              <Card title="Postnatal Care Tips" button={<OutlineBtn href="/resources/recovery-after-childbirth">Read Full Guide</OutlineBtn>}>
+                <p className="text-sm font-bold text-navy mb-3">Recovery & Breastfeeding</p>
+                <div className="space-y-3">
+                  {POSTNATAL_TIPS.map(tip => (
+                    <div key={tip.title} className="flex gap-3">
+                      <span className="text-lg shrink-0">{tip.icon}</span>
+                      <div>
+                        <p className="text-xs font-bold text-navy">{tip.title}</p>
+                        <p className="text-xs font-medium text-gray-500 leading-relaxed">{tip.body}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </>
+          ) : (
+            <>
+              {/* ── PREGNANCY MODE ── */}
+              {/* My Pregnancy Progress */}
+              <Card title="My Pregnancy Progress" button={<OutlineBtn href="/journey">View Pregnancy Journey</OutlineBtn>}>
+                {weeks !== null ? (
+                  <>
+                    <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
+                      <div className="bg-navy h-2 rounded-full transition-all" style={{ width: `${progressPct}%` }} />
+                    </div>
+                    <p className="text-sm font-medium text-gray-500 mb-5">{weeks} of 40 Weeks</p>
+                  </>
+                ) : (
+                  <div className="w-full bg-gray-200 rounded-full h-2 mb-5" />
+                )}
+                <p className="text-sm font-bold text-navy mb-3">Progress Data</p>
+                <DataRow label="Due Date" value={formatDate(mother?.due_date)} />
+                <DataRow label="Baby Size" value={babySize} />
+                <DataRow label="Next Milestone" value={nextMilestone} />
+              </Card>
+
+              {/* Pregnancy Timeline */}
+              <Card title="Pregnancy Timeline" button={<OutlineBtn href="/journey">View Timeline</OutlineBtn>}>
+                <DataRow label="Current Week" value={weeks !== null ? `${weeks} Weeks` : '—'} />
+                <DataRow label="Trimester" value={trimester || '—'} />
+                <DataRow label="Next Milestone" value={nextMilestone} />
+                <DataRow label="Baby Development" value={babyDev} />
+              </Card>
+
+              {/* Birth Plan */}
+              <Card title="My Birth Plan" button={<OutlineBtn href="/dashboard/birth-plan">Open Birth Plan</OutlineBtn>}>
+                <p className="text-sm font-medium text-gray-400 leading-relaxed">
+                  Plan where you will give birth, who will support you, and what to bring — so you're fully prepared when labour begins.
+                </p>
+                {weeks !== null && weeks >= 28 && (
+                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-[8px]">
+                    <p className="text-xs font-medium text-amber-800">You're in your third trimester — a good time to finalise your birth plan.</p>
+                  </div>
+                )}
+              </Card>
+
+              {/* Baby Names */}
+              <Card title="Baby Names" button={<OutlineBtn href="/dashboard/baby-names">Explore Names</OutlineBtn>}>
+                <p className="text-sm font-medium text-gray-400 leading-relaxed">
+                  Browse Rwandan baby names with their meanings in Kinyarwanda — and save your favourites.
+                </p>
+              </Card>
+            </>
+          )}
+
+          {/* ── ALWAYS SHOWN ── */}
 
           {/* Upcoming Reminders */}
           <Card title="Upcoming Reminders" button={<OutlineBtn href="/dashboard/reminders">View All Reminders</OutlineBtn>}>
@@ -222,72 +369,53 @@ export default function MotherDashboard() {
           </Card>
 
           {/* My Health Overview */}
-          <Card title="My Health Overview" button={<OutlineBtn href="/dashboard/health">{todayLog ? 'View Check-In' : 'Do Today\'s Check-In'}</OutlineBtn>}>
+          <Card title="My Health Overview" button={<OutlineBtn href="/dashboard/health">{todayLog ? 'View Check-In' : "Do Today's Check-In"}</OutlineBtn>}>
             <p className="text-sm font-bold text-navy mb-3">Today's Check-In</p>
             {todayLog ? (
               <>
                 <DataRow label="Mood" value={todayLog.mood ? todayLog.mood.charAt(0).toUpperCase() + todayLog.mood.slice(1) : '—'} />
                 <DataRow label="Symptoms" value={todayLog.symptoms?.length ? todayLog.symptoms.join(', ') : 'None reported'} />
                 <DataRow label="Nutrition" value={todayLog.nutrition === 'on_track' ? 'On Track' : todayLog.nutrition === 'needs_improvement' ? 'Needs Improvement' : todayLog.nutrition === 'poor' ? 'Poor' : '—'} />
-                <DataRow label="Recommendation" value={weeks && weeks >= 16 ? 'Increase iron-rich foods this week.' : 'Stay hydrated and rest well.'} />
               </>
             ) : (
               <p className="text-sm font-medium text-gray-400">You haven't checked in today. <Link href="/dashboard/health" className="text-navy underline underline-offset-2">Log how you're feeling</Link>.</p>
             )}
           </Card>
 
+          {/* Nearest Health Centers */}
+          <Card title="Nearest Health Facilities" button={<OutlineBtn href="/dashboard/health-centers">Find Facilities Near Me</OutlineBtn>}>
+            <p className="text-sm font-medium text-gray-400 leading-relaxed">
+              Locate the nearest hospitals and health centres in your area — with emergency contacts.
+            </p>
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-[8px]">
+              <p className="text-xs font-bold text-red-700">For emergencies: go to your nearest hospital — do not wait for your CHW.</p>
+            </div>
+          </Card>
+
           {/* Recommended Resources */}
           <Card title="Recommended Resources" button={<OutlineBtn href="/resources">Explore Resources</OutlineBtn>}>
             <p className="text-sm font-medium text-gray-400">
-              Evidence-based articles and guides on pregnancy, nutrition, and postnatal care — sourced from Rwanda Ministry of Health and RBC.
+              Evidence-based articles on pregnancy, nutrition, and postnatal care — sourced from Rwanda Ministry of Health and RBC.
             </p>
           </Card>
 
-          {/* CHW Visits */}
-          <Card title="Scheduled CHW Visits" button={<OutlineBtn href="/dashboard/find-chw">{upcomingVisits.length > 0 ? 'View All' : 'Find a CHW'}</OutlineBtn>}>
-            {upcomingVisits.length > 0 ? (
-              <div className="space-y-4">
-                {upcomingVisits.map(v => (
-                  <div key={v.id}>
-                    <p className="text-sm font-bold text-navy capitalize">{v.visit_type} Visit</p>
-                    <p className="text-xs font-medium text-gray-400 mt-0.5">
-                      {new Date(v.visit_date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
-                    </p>
-                    {v.notes && <p className="text-xs text-gray-400 mt-0.5 italic">{v.notes}</p>}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm font-medium text-gray-400">No visits scheduled yet.</p>
-            )}
-          </Card>
-
           {/* My Care Team */}
-          <Card title="My Care Team" button={
+          <Card title="My Care Team (Abajyanama b'ubuzima)" button={
             chwName
-              ? <OutlineBtn href="/dashboard/messages">Contact CHW</OutlineBtn>
+              ? <OutlineBtn href="/dashboard/messages">View Messages from CHW</OutlineBtn>
               : <OutlineBtn href="/dashboard/find-chw">Find a CHW Near You</OutlineBtn>
           }>
             {chwName ? (
               <>
-                <DataRow label="Assigned Community Health Worker" value={chwName} />
-                <DataRow label="Health Facility" value={[chwProfile?.sector, chwProfile?.district].filter(Boolean).join(' Health Centre, ') || '—'} />
-                {chwProfile?.health_facility && <DataRow label="Facility" value={chwProfile.health_facility} />}
+                <DataRow label="Community Health Worker" value={chwName} />
+                <DataRow label="Sector" value={[chwProfile?.sector, chwProfile?.district].filter(Boolean).join(', ') || '—'} />
+                <p className="text-xs font-medium text-gray-400 mt-3 leading-relaxed">Your CHW (Umujyanama w'ubuzima) will send you care messages and updates through Ndarinzwe.</p>
               </>
             ) : (
               <p className="text-sm font-medium text-gray-400">
-                No CHW linked yet. Find a community health worker near you.
+                No CHW linked yet. Find a Community Health Worker (Umujyanama w'ubuzima) near you.
               </p>
             )}
-          </Card>
-
-          {/* Pregnancy Timeline */}
-          <Card title="Pregnancy Timeline" button={<OutlineBtn href="/journey">View Timeline</OutlineBtn>}>
-            <p className="text-sm font-bold text-navy mb-3">Today's Check-In</p>
-            <DataRow label="Current Week" value={weeks !== null ? `${weeks} Weeks` : '—'} />
-            <DataRow label="Trimester" value={trimester || '—'} />
-            <DataRow label="Next Milestone" value={nextMilestone} />
-            <DataRow label="Baby Development Update" value={babyDev} />
           </Card>
 
         </div>

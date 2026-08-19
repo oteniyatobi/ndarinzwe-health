@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import Navbar from '@/components/Navbar'
 import DashboardHeader from '@/components/DashboardHeader'
 import Footer from '@/components/Footer'
 
@@ -83,33 +83,30 @@ const CATEGORY_COLORS = [
 ]
 
 export default function ResourcesPage() {
-  const router = useRouter()
   const [profile, setProfile] = useState(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function load() {
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) { router.push('/login'); return }
-      const { data: p } = await supabase.from('profiles').select('role, full_name').eq('id', user.id).single()
-      setProfile(p)
-      setLoading(false)
+      try {
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) return
+        const { data: p } = await supabase.from('profiles').select('role, full_name').eq('id', user.id).single()
+        setProfile(p)
+      } catch {}
     }
     load()
-  }, [router])
+  }, [])
 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="w-10 h-10 border-2 border-navy border-t-transparent rounded-full animate-spin" />
-    </div>
-  )
-
+  const isLoggedIn = !!profile
   const dashHref = profile?.role === 'chw' ? '/dashboard/chw' : '/dashboard'
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <DashboardHeader name={profile?.full_name} />
+      {isLoggedIn
+        ? <DashboardHeader name={profile.full_name} />
+        : <Navbar />
+      }
 
       <section className="bg-[#FFF0F6] px-6 md:px-10 py-10">
         <div className="max-w-4xl mx-auto">
@@ -121,12 +118,14 @@ export default function ResourcesPage() {
       </section>
 
       <main className="flex-1 max-w-4xl mx-auto w-full px-6 md:px-10 py-10">
-        <Link href={dashHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-navy/50 hover:text-navy mb-8 transition-colors">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <polyline points="15 18 9 12 15 6"/>
-          </svg>
-          Back to Dashboard
-        </Link>
+        {isLoggedIn && (
+          <Link href={dashHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-navy/50 hover:text-navy mb-8 transition-colors">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            Back to Dashboard
+          </Link>
+        )}
 
         <div className="mb-6 px-4 py-3 bg-amber-50 border border-amber-200 rounded-[8px]">
           <p className="text-sm font-medium text-amber-800">

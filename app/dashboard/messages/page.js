@@ -189,7 +189,7 @@ function MessagesPage() {
             {noChw && (
               <div className="text-center py-16">
                 <p className="text-sm font-bold text-navy mb-2">No CHW linked yet</p>
-                <p className="text-sm text-gray-400 mb-5">You need a Community Health Worker before you can send messages.</p>
+                <p className="text-sm text-gray-400 mb-5">Once a Community Health Worker (Umujyanama w'ubuzima) is linked to your account, they will send you care messages and updates here.</p>
                 <a href="/dashboard/find-chw"
                   className="px-5 py-2.5 bg-navy text-white text-sm font-bold rounded-[5px] hover:opacity-90 transition-opacity">
                   Find a CHW
@@ -205,7 +205,11 @@ function MessagesPage() {
 
             {messages.length === 0 && peerId && !noChw && (
               <div className="text-center py-16">
-                <p className="text-sm text-gray-400">No messages yet. Say hello!</p>
+                <p className="text-sm text-gray-400">
+                  {profile?.role === 'chw'
+                    ? 'No messages yet. Send this mother a care update.'
+                    : "No messages yet. Your CHW (Umujyanama w'ubuzima) will reach out to you here."}
+                </p>
               </div>
             )}
 
@@ -223,11 +227,11 @@ function MessagesPage() {
             <div ref={bottomRef} />
           </div>
 
-          {/* Input */}
-          {peerId && !noChw && (
+          {/* Input — CHW only */}
+          {peerId && !noChw && profile?.role === 'chw' && (
             <form onSubmit={handleSend} className="border-t border-gray-100 px-4 py-4 flex gap-3">
               <input value={text} onChange={e => setText(e.target.value)}
-                placeholder="Write a message…"
+                placeholder="Write a message to this mother…"
                 className="flex-1 px-4 py-2.5 border border-gray-200 rounded-full text-sm text-navy focus:outline-none focus:border-navy transition-colors"
               />
               <button type="submit" disabled={sending || !text.trim()}
@@ -235,6 +239,15 @@ function MessagesPage() {
                 Send
               </button>
             </form>
+          )}
+
+          {/* Mother view — read only notice */}
+          {peerId && !noChw && profile?.role !== 'chw' && (
+            <div className="border-t border-gray-100 px-5 py-4 bg-gray-50">
+              <p className="text-xs font-medium text-gray-400 text-center">
+                Your Community Health Worker (Umujyanama w'ubuzima) will send you messages here based on your health updates and visits.
+              </p>
+            </div>
           )}
         </div>
       </div>
